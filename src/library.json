@@ -1,0 +1,182 @@
+[
+    {
+        "type": "Group",
+        "attributes": {
+            "name": "main",
+            "randomize": false,
+            "display_empty": true
+        }
+    },
+    {
+        "type": "Text",
+        "attributes": {
+            "content": "<style> .button-area { margin-top: 40px; margin-left: 10px; } #main-render-area { margin-top: 25px; margin-left: 5px; } <\/style>"
+        }
+    },
+    {
+        "type": "PrizeValue",
+        "attributes": {
+            "image_url": "build\/images\/tokens.png",
+            "title": "{{YEAR}} awarded {{c:test}} Tokens...",
+            "value": "{{d:game_tokens}}",
+            "value_type": "amount",
+            "display": "count up",
+            "count_from": "0",
+            "class": ""
+        },
+        "animation": {
+            "start_state": "hidden",
+            "animations": [
+                {
+                    "name": "internal",
+                    "delay": 500,
+                    "sequence": 1,
+                    "sequence_order": 0
+                },
+                {
+                    "end_state": "visible",
+                    "name": "fadeInUp",
+                    "duration": 1000,
+                    "delay": 0,
+                    "iteration": 1,
+                    "sequence": 1,
+                    "sequence_order": 0
+                },
+                {
+                    "name": "internal",
+                    "delay": 1500,
+                    "sequence": 1,
+                    "sequence_order": 0
+                }
+            ]
+        }
+    },
+    {
+        "type": "PrizeValue",
+        "attributes": {
+            "image_url": "build\/images\/tokens.png",
+            "title": "{{u:N}} {{LP}} Bonus Tokens",
+            "value": "{{d:bonus_tokens}}",
+            "value_type": "amount",
+            "display": "static",
+            "count_from": "0",
+            "class": ""
+        },
+        "animation": {
+            "start_state": "hidden",
+            "animations": [
+                {
+                    "end_state": "visible",
+                    "name": "fadeInUp",
+                    "duration": 1000,
+                    "delay": 1000,
+                    "iteration": 1,
+                    "sequence": 1,
+                    "sequence_order": 1
+                }
+            ]
+        }
+    },
+    {
+        "type": "Text",
+        "attributes": {
+            "content": "<hr style='border-top: 3px solid;'><\/hr>"
+        },
+        "animation": {
+            "start_state": "hidden",
+            "animations": [
+                {
+                    "name": "internal",
+                    "delay": 1000,
+                    "sequence": 1,
+                    "sequence_order": 2
+                },
+                {
+                    "end_state": "visible",
+                    "name": "fadeInUp",
+                    "duration": 500,
+                    "delay": 1000,
+                    "iteration": 1,
+                    "sequence": 1,
+                    "sequence_order": 2
+                }
+            ]
+        }
+    },
+    {
+        "type": "PrizeValue",
+        "attributes": {
+            "image_url": "build\/images\/tokens.png",
+            "title": "{{giveaway}} Tokens Earned ",
+            "value": "{{d:total_tokens}}",
+            "value_type": "amount",
+            "display": "count up",
+            "count_from": "5000",
+            "class": ""
+        },
+        "animation": {
+            "start_state": "hidden",
+            "animations": [
+                {
+                    "name": "internal",
+                    "delay": 1000,
+                    "sequence": 1,
+                    "sequence_order": 2
+                },
+                {
+                    "end_state": "visible",
+                    "name": "fadeInUp",
+                    "duration": 500,
+                    "delay": 1000,
+                    "iteration": 1,
+                    "sequence": 1,
+                    "sequence_order": 2
+                }
+            ]
+        }
+    },
+    {
+        "type": "Button",
+        "attributes": {
+            "type": "continue",
+            "text": "Play Again",
+            "action": "continue"
+        },
+        "animation": {
+            "start_state": "hidden",
+            "animations": [
+                {
+                    "end_state": "visible",
+                    "name": "fadeInUp",
+                    "duration": 1000,
+                    "delay": 1500,
+                    "iteration": 1,
+                    "sequence": 1,
+                    "sequence_order": 3
+                }
+            ]
+        }
+    },
+    {
+        "type": "Button",
+        "attributes": {
+            "type": "continue",
+            "text": "Redeem Tokens",
+            "action": "continue"
+        },
+        "animation": {
+            "start_state": "hidden",
+            "animations": [
+                {
+                    "end_state": "visible",
+                    "name": "fadeInUp",
+                    "duration": 1000,
+                    "delay": 1500,
+                    "iteration": 1,
+                    "sequence": 1,
+                    "sequence_order": 3
+                }
+            ]
+        }
+    }
+]

@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import preprocess from 'svelte-preprocess';
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -25,6 +26,10 @@ export default {
 				css.write('public/build/bundle.css');
 			},
             preprocess: preprocess()
+		}),
+		
+		json({
+			compact: true
 		}),
 
 		// If you have external dependencies installed from

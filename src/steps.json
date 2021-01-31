@@ -1,0 +1,54 @@
+[
+    {
+        "step": "step0",
+        "env": "dev",
+        "site": "pchcom",
+        "device": "mobile",
+        "auth": "abcdefghij",
+        "path": "foopath",
+        "config": {
+            "giveaway": "16000C",
+            "lp": "LP878",
+            "test": "test"
+        },
+        "data": {
+            "_theme": "lp",
+            "_palette": "mobileonboarding",
+            "udt": "9CYshU1Gu38vgklSynF9tVg89QtWfidQ",
+            "game_tokens": "5000",
+            "bonus_tokens": "10000",
+            "total_tokens": "15000"
+        },
+        "render": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            -1
+        ]
+    },
+    {
+        "step": "",
+        "data": {
+            "tokens": 0,
+            "entries": 0,
+            "progress": 0,
+            "_theme": "lp",
+            "_palette": "mobileonboarding"
+        },
+        "GroupTemplate": {
+            "type": "Group",
+            "attributes": {
+                "name": "main",
+                "randomize": false,
+                "display_empty": true
+            },
+            "_children": []
+        },
+        "render": []
+    }
+]
