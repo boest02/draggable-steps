@@ -1,5 +1,6 @@
 <script>
-	import DragableContainer from './Library/DragableContainer.svelte';
+	import DragReadyContainer from './Library/DragReadyContainer.svelte';
+	import DropReadyContainer from './Library/DropReadyContainer.svelte';
 	import components from './data.js';
 	import samplesteps from './steps.js';
   import library from './library.json';
@@ -29,37 +30,46 @@
 		alert("Coming Soon!");
 		steps = steps; //make reactive
 	}
+	
 	function addStep() {
-		console.log("add step");
 		steps.push(JSON.parse(JSON.stringify(step)));
 		steps = steps; //make reactive
 	}
 	
-	function dragover (ev) {
-		console.log("drag over");
-		ev.preventDefault();
-		ev.target.style.cursor = "grab";
-	}
-	function drop (ev, stepNumber, position) {
-		console.log("drop");
-		ev.preventDefault();
-		let offset = ev.dataTransfer.getData("offset");
-		let type = ev.dataTransfer.getData("type");
-		let origin = ev.dataTransfer.getData("origin");
-		if(type === 'move') {
-			if(origin != stepNumber) {
-				console.log("Illegal move from step " + origin + " to step " + stepNumber);
-				return;
-			}
-			let element = steps[stepNumber].components[offset];
-			steps[stepNumber].components.splice(offset, 1);
-			steps[stepNumber].components.splice(position, 0, element);
-		} 
-		else {
-			steps[stepNumber].components.splice(position, 0, components[offset]);
-		}
+	const refreshSteps = () => { 
 		steps = steps;
 	}
+	
+	const moveInStep = (from, to, array) => {
+		let item = array[from];
+		array.splice(from, 1);
+		array.splice(to, 0, item);
+	};
+	
+	const addToStep = (source, target) => {
+		target.array.splice(target.offset, 0, source.array[source.offset]);
+	};
+	
+	const removeFromStep = (array, offset) => {
+		array.splice(offset, 1);
+	};
+	
+	const dropHandler = (source, target) => {
+		if(source.name === target.name) {
+			moveInStep(source.offset, target.offset, target.array);
+		} 
+		else 
+		{
+			addToStep(source, target);
+			if(source.name.startsWith('step')) {
+				let stepNumber = source.name.match(/\d+$/);
+				removeFromStep(steps[stepNumber].components, source.offset);
+			}
+		}
+		refreshSteps();
+	};
+	
+	
 </script>
 
 <p>Drag a Component to the Step you would like, in the order they should appear...</p>
@@ -68,8 +78,9 @@
 		<legend>Components (Drag from Here...)</legend>
 		<div class='holder'>
 			{#each components as item, i}
-			<!-- <div class='component' draggable="true" on:dragstart={event => dragstart(event, i)}>{item.component}</div> -->
-			<DragableContainer position={i} type='add' origin=0> <div class="component">{item.component}</div></DragableContainer>
+				<DragReadyContainer sourceObject={{ 'name': 'components', 'offset': i, "array": components }}>
+					<div class="component">{item.component}</div>
+				</DragReadyContainer>
 			{/each}
 		</div>
 </fieldset>  
@@ -83,38 +94,40 @@
 			<legend>{"Step " + (p+1)}</legend>
 			<div class='step-container'>
 				{#if step.components.length}
-					<div class='component disabled'
-							on:drop={event => drop(event, p, 0)} 
-							on:dragover={event => dragover(event)}>- First Position Drop -
-					</div>
+					<DropReadyContainer targetObject={{ 'name': 'first', 'offset': 0, "array": steps[p].components }}
+										{dropHandler}>
+						<div class='component disabled'> - First Position Drop - </div>
+					</DropReadyContainer>
 				{/if}
 				{#each step.components as item,i}
-					<DragableContainer position={i} type='move' origin={p}>
-					<div class='component' on:drop={event => drop(event, p, i)} 
-							on:dragover={event => dragover(event)}>
-						{item.component} 
-						<button class="delete-component"
-										on:click={ev => removeItem(p,i)}
-										title="Remove Component...">
-							<Icon class="icon" inverse=true data={trash}/>
-						</button>
-						<button class="edit-component"
-										on:click={ev => editItem(p,i)}>
-							<Icon class="icon" inverse=true data={pencil}/>
-						</button>
-					</div>
-					</DragableContainer>
+					<DragReadyContainer sourceObject={{'name': 'step' + p, 'offset': i, "array": steps[p].components}}>
+						<DropReadyContainer targetObject={{ 'name': 'step' + p, 'offset': i, "array": steps[p].components }}
+											{dropHandler}>
+							<div class='component'>
+								{item.component} 
+								<button class="delete-component"
+												on:click={ev => removeItem(p,i)}
+												title="Remove Component...">
+									<Icon class="icon" inverse=true data={trash}/>
+								</button>
+								<button class="edit-component"
+												on:click={ev => editItem(p,i)}>
+									<Icon class="icon" inverse=true data={pencil}/>
+								</button>
+							</div>
+						</DropReadyContainer>
+					</DragReadyContainer>
 				{/each}			
 				{#if step.components.length}
-					<div class='component disabled' 
-							on:drop={event => drop(event, p, step.components.length)} 
-							on:dragover={event => dragover(event)}>- Last Position Drop -
-				</div>
+					<DropReadyContainer targetObject={{ 'name': 'last', 'offset': step.components.length, "array": steps[p].components }}
+										{dropHandler}>
+						<div class='component disabled'> - Last Position Drop - </div>
+					</DropReadyContainer>
 				{:else}
-					<div class='component empty'
-							on:drop={event => drop(event, p, step.components.length)} 
-							on:dragover={event => dragover(event)}>Add Components <br/> Here
-					</div>
+					<DropReadyContainer targetObject={{ 'name': 'empty', 'offset': step.components.length, "array": steps[p].components }}
+										{dropHandler}>
+						<div class='component disabled'> - Add Components Here - </div>
+					</DropReadyContainer>
 				{/if}
 
 			</div>
